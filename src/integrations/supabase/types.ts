@@ -18,38 +18,50 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          last_message: string | null
           last_message_at: string | null
           last_message_id: string | null
-          participant1_id: string | null
-          participant2_id: string | null
+          unread_count_user1: number | null
+          unread_count_user2: number | null
+          updated_at: string | null
+          user1_id: string | null
+          user2_id: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
+          last_message?: string | null
           last_message_at?: string | null
           last_message_id?: string | null
-          participant1_id?: string | null
-          participant2_id?: string | null
+          unread_count_user1?: number | null
+          unread_count_user2?: number | null
+          updated_at?: string | null
+          user1_id?: string | null
+          user2_id?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
+          last_message?: string | null
           last_message_at?: string | null
           last_message_id?: string | null
-          participant1_id?: string | null
-          participant2_id?: string | null
+          unread_count_user1?: number | null
+          unread_count_user2?: number | null
+          updated_at?: string | null
+          user1_id?: string | null
+          user2_id?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "conversations_participant1_id_fkey"
-            columns: ["participant1_id"]
+            columns: ["user1_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "conversations_participant2_id_fkey"
-            columns: ["participant2_id"]
+            columns: ["user2_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -108,6 +120,27 @@ export type Database = {
           },
         ]
       }
+      friends: {
+        Row: {
+          created_at: string
+          id: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: []
+      }
       friendships: {
         Row: {
           created_at: string | null
@@ -149,33 +182,27 @@ export type Database = {
           content: string
           conversation_id: string | null
           created_at: string | null
-          expires_at: string | null
           id: string
           is_read: boolean | null
-          message_type: string | null
-          read_at: string | null
+          receiver_id: string | null
           sender_id: string | null
         }
         Insert: {
           content: string
           conversation_id?: string | null
           created_at?: string | null
-          expires_at?: string | null
           id?: string
           is_read?: boolean | null
-          message_type?: string | null
-          read_at?: string | null
+          receiver_id?: string | null
           sender_id?: string | null
         }
         Update: {
           content?: string
           conversation_id?: string | null
           created_at?: string | null
-          expires_at?: string | null
           id?: string
           is_read?: boolean | null
-          message_type?: string | null
-          read_at?: string | null
+          receiver_id?: string | null
           sender_id?: string | null
         }
         Relationships: [
@@ -200,34 +227,40 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           created_at: string | null
+          display_name: string | null
           full_name: string | null
           id: string
           is_online: boolean | null
           last_seen: string | null
           updated_at: string | null
-          username: string
+          user_id: string | null
+          username: string | null
         }
         Insert: {
           avatar_url?: string | null
           bio?: string | null
           created_at?: string | null
+          display_name?: string | null
           full_name?: string | null
           id: string
           is_online?: boolean | null
           last_seen?: string | null
           updated_at?: string | null
-          username: string
+          user_id?: string | null
+          username?: string | null
         }
         Update: {
           avatar_url?: string | null
           bio?: string | null
           created_at?: string | null
+          display_name?: string | null
           full_name?: string | null
           id?: string
           is_online?: boolean | null
           last_seen?: string | null
           updated_at?: string | null
-          username?: string
+          user_id?: string | null
+          username?: string | null
         }
         Relationships: []
       }
@@ -243,6 +276,10 @@ export type Database = {
       cleanup_expired_messages: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      delete_old_messages: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
     }
     Enums: {
